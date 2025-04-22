@@ -1,3 +1,6 @@
 [submodule "external/sdl"]
 	path = external/sdl
 	url = git@github.com:libsdl-org/SDL.git
+[submodule "external/tracy"]
+	path = external/tracy
+	url = https://github.com/wolfpld/tracy

@@ -1,0 +1,35 @@
+﻿#pragma once
+
+#include "tracing.h"
+
+inline void* operator new(size_t size)
+{
+    BITFORGE_TRACING;
+    void* pointer = malloc(size);
+    if (!pointer)
+    {
+        return nullptr;
+    }
+
+    BITFORGE_MEM_TRACING_ALLOC(pointer, size);
+    return pointer;
+}
+
+inline void operator delete(void* pointer)
+{
+    BITFORGE_TRACING;
+    BITFORGE_MEM_TRACING_FREE(pointer);
+    free(pointer);
+}
+
+inline void* operator new[](size_t size)
+{
+    return operator new(size);
+}
+
+inline void operator delete[](void* pointer)
+{
+    BITFORGE_TRACING;
+    BITFORGE_MEM_TRACING_FREE(pointer);
+    free(pointer);
+}
