@@ -5,7 +5,13 @@
 inline void* operator new(size_t size)
 {
     BITFORGE_TRACING;
-    void* pointer = malloc(size);
+
+    if (size == 0)
+    {
+        return nullptr;
+    }
+
+    void* pointer = std::malloc(size);
     if (!pointer)
     {
         return nullptr;
@@ -19,17 +25,5 @@ inline void operator delete(void* pointer)
 {
     BITFORGE_TRACING;
     BITFORGE_MEM_TRACING_FREE(pointer);
-    free(pointer);
-}
-
-inline void* operator new[](size_t size)
-{
-    return operator new(size);
-}
-
-inline void operator delete[](void* pointer)
-{
-    BITFORGE_TRACING;
-    BITFORGE_MEM_TRACING_FREE(pointer);
-    free(pointer);
+    std::free(pointer);
 }
