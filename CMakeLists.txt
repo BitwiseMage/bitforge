@@ -19,6 +19,8 @@ set (source_files
 		${CMAKE_SOURCE_DIR}/src/logging/logger.h
 		${CMAKE_SOURCE_DIR}/src/core/instance.cpp
 		${CMAKE_SOURCE_DIR}/src/core/instance.h
+		src/core/thread.cpp
+		src/core/thread.h
 )
 
 # SDL
