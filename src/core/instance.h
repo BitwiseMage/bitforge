@@ -4,10 +4,10 @@
 
 namespace Bitforge
 {
-class EngineInstance
+class CoreInstance
 {
 public:
-    EngineInstance() = default;
+    CoreInstance() = default;
 
     void Tick();
 

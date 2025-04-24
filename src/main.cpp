@@ -1,13 +1,12 @@
-#include "core/engineinstance.h"
-#include "core/logging.h"
-#include "core/memory.h"
+#include "core/instance.h"
+#include "logging/logging.h"
 
 int main()
 {
-    Bitforge::EngineInstance engine_instance;
-    while (!engine_instance.IsExitRequested())
+    Bitforge::CoreInstance core_instance;
+    while (!core_instance.IsExitRequested())
     {
-        engine_instance.Tick();
+        core_instance.Tick();
         BITFORGE_TRACING_FRAME_NAMED("main_loop");
     }
 

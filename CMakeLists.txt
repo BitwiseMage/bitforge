@@ -16,9 +16,9 @@ set (source_files
 		${CMAKE_SOURCE_DIR}/src/main.cpp
 		${CMAKE_SOURCE_DIR}/src/core/tracing.h
 		${CMAKE_SOURCE_DIR}/src/core/memory.h
-		${CMAKE_SOURCE_DIR}/src/core/logging.h
-		${CMAKE_SOURCE_DIR}/src/core/engineinstance.cpp
-		${CMAKE_SOURCE_DIR}/src/core/engineinstance.h
+		${CMAKE_SOURCE_DIR}/src/logging/logging.h
+		${CMAKE_SOURCE_DIR}/src/core/instance.cpp
+		${CMAKE_SOURCE_DIR}/src/core/instance.h
 )
 
 # SDL
@@ -33,4 +33,5 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/external/tracy EXCLUDE_FROM_ALL)
 target_compile_options(TracyClient PUBLIC "-w")
 
 add_executable(bitforge ${source_files})
+target_include_directories(bitforge PUBLIC ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(bitforge PRIVATE SDL3::SDL3 Tracy::TracyClient)
