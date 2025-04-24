@@ -16,7 +16,7 @@ set (source_files
 		${CMAKE_SOURCE_DIR}/src/main.cpp
 		${CMAKE_SOURCE_DIR}/src/core/tracing.h
 		${CMAKE_SOURCE_DIR}/src/core/memory.h
-		${CMAKE_SOURCE_DIR}/src/logging/logging.h
+		${CMAKE_SOURCE_DIR}/src/logging/logger.h
 		${CMAKE_SOURCE_DIR}/src/core/instance.cpp
 		${CMAKE_SOURCE_DIR}/src/core/instance.h
 )

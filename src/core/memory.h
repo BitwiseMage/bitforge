@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "core/tracing.h"
+#include "tracing.h"
 
 inline void* operator new(size_t size)
 {

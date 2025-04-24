@@ -1,5 +1,5 @@
 #include "core/instance.h"
-#include "logging/logging.h"
+#include "core/tracing.h"
 
 int main()
 {
