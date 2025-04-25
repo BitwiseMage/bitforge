@@ -15,12 +15,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set (source_files
 		${CMAKE_SOURCE_DIR}/src/main.cpp
 		${CMAKE_SOURCE_DIR}/src/core/tracing.h
-		${CMAKE_SOURCE_DIR}/src/core/memory.h
+		${CMAKE_SOURCE_DIR}/src/logging/logger.cpp
 		${CMAKE_SOURCE_DIR}/src/logging/logger.h
 		${CMAKE_SOURCE_DIR}/src/core/instance.cpp
 		${CMAKE_SOURCE_DIR}/src/core/instance.h
-		src/core/thread.cpp
-		src/core/thread.h
+		${CMAKE_SOURCE_DIR}/src/core/thread.cpp
+		${CMAKE_SOURCE_DIR}/src/core/thread.h
+		${CMAKE_SOURCE_DIR}/src/core/uniqueptr.h
 )
 
 # SDL

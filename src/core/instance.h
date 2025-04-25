@@ -2,12 +2,10 @@
 
 #include <cstdint>
 
-namespace Bitforge
-{
-class CoreInstance
+class BitforgeInstance
 {
 public:
-    CoreInstance() = default;
+    BitforgeInstance();
 
     void Tick();
 
@@ -20,5 +18,3 @@ private:
     bool m_requested_exit = false;
     int32_t m_requested_exit_code = 0;
 };
-}
-

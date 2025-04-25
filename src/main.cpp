@@ -3,7 +3,7 @@
 
 int main()
 {
-    Bitforge::CoreInstance core_instance;
+    BitforgeInstance core_instance;
     while (!core_instance.IsExitRequested())
     {
         core_instance.Tick();
