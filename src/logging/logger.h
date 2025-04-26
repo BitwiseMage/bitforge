@@ -1,27 +1,30 @@
 ﻿#pragma once
 
-#include "core/thread.h"
 #include "core/uniqueptr.h"
+#include "quill/Logger.h"
+#include "quill/LogMacros.h"
 
-class LoggingThread : public Thread
-{
-public:
-    LoggingThread() : Thread("Logging Thread") { }
-    int32_t Main() override;
-};
+#define BIT_LOG_TRACE3(fmt, ...) QUILL_LOG_TRACE_L3(Logger::Get()->GetMainLoggerPtr(), fmt, __VA_ARGS__)
+#define BIT_LOG_TRACE2(fmt, ...) QUILL_LOG_TRACE_L2(Logger::Get()->GetMainLoggerPtr(), fmt, __VA_ARGS__)
+#define BIT_LOG_TRACE(fmt, ...) QUILL_LOG_TRACE_L1(Logger::Get()->GetMainLoggerPtr(), fmt, __VA_ARGS__)
+#define BIT_LOG_DEBUG(fmt, ...) QUILL_LOG_DEBUG(Logger::Get()->GetMainLoggerPtr(), fmt, __VA_ARGS__)
+#define BIT_LOG_INFO(fmt, ...) QUILL_LOG_INFO(Logger::Get()->GetMainLoggerPtr(), fmt, __VA_ARGS__)
+#define BIT_LOG_WARNING(fmt, ...) QUILL_LOG_WARNING(Logger::Get()->GetMainLoggerPtr(), fmt, __VA_ARGS__)
+#define BIT_LOG_ERROR(fmt, ...) QUILL_LOG_ERROR(Logger::Get()->GetMainLoggerPtr(), fmt, __VA_ARGS__)
+#define BIT_LOG_CRITICAL(fmt, ...) QUILL_LOG_CRITICAL(Logger::Get()->GetMainLoggerPtr(), fmt, __VA_ARGS__)
 
 class Logger
 {
 public:
-    Logger() = default;
+    Logger();
     static Logger* Get()
     {
         static Logger logger;
         return &logger;
     }
 
-    void LogMessage();
+    quill::Logger* GetMainLoggerPtr() { return m_logger.GetRawPtr(); }
 
 private:
-    LoggingThread m_logging_thread;
+    UniquePtr<quill::Logger> m_logger;
 };

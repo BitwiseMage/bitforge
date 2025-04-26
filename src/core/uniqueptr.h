@@ -4,7 +4,7 @@
 
 inline void* operator new(size_t size)
 {
-    BITFORGE_TRACING;
+    BIT_TRACING;
     if (size == 0)
     {
         return nullptr;
@@ -16,14 +16,14 @@ inline void* operator new(size_t size)
         return nullptr;
     }
 
-    BITFORGE_MEM_TRACING_ALLOC(pointer, size);
+    BIT_MEM_TRACING_ALLOC(pointer, size);
     return pointer;
 }
 
 inline void operator delete(void* pointer)
 {
-    BITFORGE_TRACING;
-    BITFORGE_MEM_TRACING_FREE(pointer);
+    BIT_TRACING;
+    BIT_MEM_TRACING_FREE(pointer);
     std::free(pointer);
 }
 
@@ -31,7 +31,7 @@ template<class T>
 class UniquePtr
 {
 public:
-    UniquePtr() = delete;
+    UniquePtr() = default;
     UniquePtr(const UniquePtr&) = delete;
 
     explicit UniquePtr(T* ptr) : m_ptr(ptr) { }
@@ -39,10 +39,12 @@ public:
 
     ~UniquePtr() { Clear(); }
 
+    T* GetRawPtr() { return m_ptr; }
+
     T& operator*() const { return *m_ptr; }
     T* operator->() const noexcept { return m_ptr; }
     explicit operator bool() const noexcept { return m_ptr != nullptr; }
-    UniquePtr& operator=(const T* new_ptr)
+    UniquePtr& operator=(T* new_ptr)
     {
         Clear();
         m_ptr = new_ptr;

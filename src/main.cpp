@@ -7,7 +7,7 @@ int main()
     while (!core_instance.IsExitRequested())
     {
         core_instance.Tick();
-        BITFORGE_TRACING_FRAME_NAMED("main_loop");
+        BIT_TRACING_FRAME_NAMED("main_loop");
     }
 
     return 0;

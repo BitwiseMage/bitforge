@@ -13,10 +13,9 @@ static int SdlThreadFunc(void* data)
     return exit_code;
 }
 
-
 Thread::Thread(const char* thread_name)
 {
-    BITFORGE_TRACING;
+    BIT_TRACING;
 
     SDL_Thread* thread = SDL_CreateThread(SdlThreadFunc, thread_name, this);
     if (!thread)

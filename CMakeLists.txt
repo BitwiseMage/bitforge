@@ -15,13 +15,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set (source_files
 		${CMAKE_SOURCE_DIR}/src/main.cpp
 		${CMAKE_SOURCE_DIR}/src/core/tracing.h
-		${CMAKE_SOURCE_DIR}/src/logging/logger.cpp
-		${CMAKE_SOURCE_DIR}/src/logging/logger.h
 		${CMAKE_SOURCE_DIR}/src/core/instance.cpp
 		${CMAKE_SOURCE_DIR}/src/core/instance.h
 		${CMAKE_SOURCE_DIR}/src/core/thread.cpp
 		${CMAKE_SOURCE_DIR}/src/core/thread.h
 		${CMAKE_SOURCE_DIR}/src/core/uniqueptr.h
+		${CMAKE_SOURCE_DIR}/src/logging/logger.cpp
+		${CMAKE_SOURCE_DIR}/src/logging/logger.h
 )
 
 # SDL
@@ -35,6 +35,10 @@ option(TRACY_ONLY_LOCALHOST "" ON)
 add_subdirectory(${CMAKE_SOURCE_DIR}/external/tracy EXCLUDE_FROM_ALL)
 target_compile_options(TracyClient PUBLIC "-w")
 
+# Quill
+option(QUILL_DISABLE_NON_PREFIXED_MACROS "" ON)
+add_subdirectory(${CMAKE_SOURCE_DIR}/external/quill EXCLUDE_FROM_ALL)
+
 add_executable(bitforge ${source_files})
 target_include_directories(bitforge PUBLIC ${CMAKE_SOURCE_DIR}/src)
-target_link_libraries(bitforge PRIVATE SDL3::SDL3 Tracy::TracyClient)
+target_link_libraries(bitforge PRIVATE SDL3::SDL3 Tracy::TracyClient quill::quill)

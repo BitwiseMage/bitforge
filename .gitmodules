@@ -4,3 +4,6 @@
 [submodule "external/tracy"]
 	path = external/tracy
 	url = https://github.com/wolfpld/tracy
+[submodule "external/quill"]
+	path = external/quill
+	url = git@github.com:odygrd/quill.git
