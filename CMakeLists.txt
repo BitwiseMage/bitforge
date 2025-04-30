@@ -22,6 +22,12 @@ set (source_files
 		${CMAKE_SOURCE_DIR}/src/core/uniqueptr.h
 		${CMAKE_SOURCE_DIR}/src/logging/logger.cpp
 		${CMAKE_SOURCE_DIR}/src/logging/logger.h
+		${CMAKE_SOURCE_DIR}/src/core/subsystem.h
+		${CMAKE_SOURCE_DIR}/src/core/string.h
+		${CMAKE_SOURCE_DIR}/src/core/vector.h
+		${CMAKE_SOURCE_DIR}/src/core/string.cpp
+		${CMAKE_SOURCE_DIR}/src/timer/timer.cpp
+		${CMAKE_SOURCE_DIR}/src/timer/timer.h
 )
 
 # SDL

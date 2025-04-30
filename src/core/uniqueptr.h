@@ -39,7 +39,7 @@ public:
 
     ~UniquePtr() { Clear(); }
 
-    T* GetRawPtr() { return m_ptr; }
+    T* GetRawPtr() const { return m_ptr; }
 
     T& operator*() const { return *m_ptr; }
     T* operator->() const noexcept { return m_ptr; }
