@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include <cstdint>
+#include "timer/timer.h"
 
 class BitforgeInstance
 {
@@ -15,6 +15,8 @@ public:
     int32_t GetExitRequestCode() const { return m_requested_exit_code; }
 
 private:
+    TimerSubsystem m_timer_subsystem = TimerSubsystem(this);
+
     bool m_requested_exit = false;
     int32_t m_requested_exit_code = 0;
 };

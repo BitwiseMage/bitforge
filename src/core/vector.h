@@ -88,6 +88,7 @@ public:
         m_data_ptr = nullptr;
         memcpy(new_data_ptr, other.m_data_ptr.GetRawPtr(), other.m_size * sizeof(T));
 
+        m_data_ptr = new_data_ptr;
         m_size = other.m_size;
         m_capacity = other.m_capacity;
         return *this;
