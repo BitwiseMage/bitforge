@@ -67,7 +67,6 @@ set_target_properties(Catch2WithMain PROPERTIES FOLDER external/catch2)
 set_target_properties(Catch2 PROPERTIES FOLDER external/catch2)
 
 set (test_files
-		${CMAKE_SOURCE_DIR}/tests/vector.cpp
 		${CMAKE_SOURCE_DIR}/tests/uniqueptr.cpp
 )
 

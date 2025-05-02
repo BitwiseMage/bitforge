@@ -10,7 +10,7 @@ TEST_CASE("UniquePtr lifetime handling", "[uniqueptr]")
         UniquePtr<char> char_unique_ptr(raw);
         REQUIRE(char_unique_ptr.GetRawPtr() == raw);
 
-        char_unique_ptr = nullptr;
+        char_unique_ptr.Clean();
         REQUIRE(char_unique_ptr.GetRawPtr() == nullptr);
 
         UniquePtr<char> char_unique_ptr_moved(raw2);
