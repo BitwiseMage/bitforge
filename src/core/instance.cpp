@@ -11,7 +11,7 @@ BitforgeInstance::BitforgeInstance()
     m_timer_subsystem = timer_subsystem.GetRawPtr();
     m_timer_subsystem->SetMinimumFrameTime(16.6666f);
 
-    m_subsystems_vector.PushBack(std::move(timer_subsystem));
+    m_subsystems_vector.PushBack(static_cast<UniquePtr<Subsystem>>(std::move(timer_subsystem)));
 }
 
 void BitforgeInstance::Tick()

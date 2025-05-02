@@ -39,7 +39,7 @@ public:
     UniquePtr(UniquePtr&& other) noexcept : m_ptr(other.Release()) { }
 
     template<class U, typename = typename std::enable_if<std::is_convertible<U*, T*>::value>::type>
-    UniquePtr(UniquePtr<U>&& other) noexcept : m_ptr(other.Release()) { }
+    explicit UniquePtr(UniquePtr<U>&& other) noexcept : m_ptr(other.Release()) { }
 
     T& operator*() const { return *m_ptr; }
     T* operator->() const noexcept { return m_ptr; }
