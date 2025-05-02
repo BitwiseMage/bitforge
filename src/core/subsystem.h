@@ -11,7 +11,7 @@ public:
     virtual ~Subsystem() = default;
 
     virtual bool ShouldTick() = 0;
-    virtual void Tick() { }
+    virtual void Tick(const int64_t delta_time_ns) { }
 
 private:
     BitforgeInstance* m_engine_instance = nullptr;

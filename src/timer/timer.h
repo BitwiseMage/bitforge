@@ -14,9 +14,10 @@ public:
     void PossibleSleep() const;
     void FrameFinished();
 
+    int64_t GetLatestFrameDeltaTimeNs() const { return m_latest_frame_work_time; }
+
 private:
     static int64_t GetCurrentTimeInNanoseconds();
-    int64_t GetLatestFrameDeltaTimeNs() const { return m_latest_frame_work_time; }
 
     int64_t m_minimum_frame_time = 0;
     int64_t m_current_frame_start_work_time = 0;

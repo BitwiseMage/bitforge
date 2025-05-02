@@ -24,11 +24,14 @@ void BitforgeInstance::Tick()
 
 void BitforgeInstance::TickSubsystems()
 {
+    const int64_t delta_time_ns = m_timer_subsystem->GetLatestFrameDeltaTimeNs();
     for (const UniquePtr<Subsystem>& subsystem: m_subsystems_vector)
     {
         if (subsystem->ShouldTick())
         {
-            subsystem->Tick();
+            continue;
         }
+
+        subsystem->Tick(delta_time_ns);
     }
 }
