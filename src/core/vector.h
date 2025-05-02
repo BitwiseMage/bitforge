@@ -8,6 +8,12 @@ class Vector
 public:
     Vector() = default;
     Vector(const Vector&) = delete;
+    ~Vector()
+    {
+        m_size = 0;
+        m_capacity = 0;
+        m_capacity_limit_max = 0;
+    }
 
     explicit Vector(size_t capacity_initial, const size_t capacity_limit_max = 0)
     {
@@ -30,43 +36,42 @@ public:
             return;
         }
 
-        m_data_ptr = data_ptr;
+        m_data_ptr.Acquire(data_ptr);
         m_capacity = capacity_initial;
         m_capacity_limit_max = capacity_limit_max;
     }
+    T* GetData() { return m_data_ptr.GetRawPtr(); }
 
-    T* PushBack(const T& new_value)
+    T* PushBack(T& new_value)
     {
         BIT_TRACING;
-        if (m_size >= m_capacity)
+        if (!PushBackChecks())
         {
-            if (m_capacity_limit_max > 0 && m_size >= m_capacity_limit_max)
-            {
-                BIT_LOG_ERROR("Pushing to vector failed due to max capacity being reached");
-                return nullptr;
-            }
-
-            const size_t new_capacity = m_capacity == 0 ? 1 : m_capacity * 2;
-            if (!Resize(new_capacity))
-            {
-                BIT_LOG_ERROR("Vector resizing failed");
-                return nullptr;
-            }
+            return nullptr;
         }
 
         m_data_ptr.GetRawPtr()[m_size] = new_value;
-        return m_data_ptr.GetRawPtr()[m_size++];
+        return &m_data_ptr.GetRawPtr()[m_size++];
     }
 
-    ~Vector()
+    T* PushBack(T&& new_value)
     {
-        m_data_ptr = nullptr;
-        m_size = 0;
-        m_capacity = 0;
-        m_capacity_limit_max = 0;
+        BIT_TRACING;
+        if (!PushBackChecks())
+        {
+            return nullptr;
+        }
+
+        m_data_ptr.GetRawPtr()[m_size] = std::move(new_value);
+        return &m_data_ptr.GetRawPtr()[m_size++];
     }
 
-    T* GetData() { return m_data_ptr.GetRawPtr(); }
+    typedef T* iterator;
+    typedef const T* const_iterator;
+    iterator begin() { return &m_data_ptr.GetRawPtr()[0]; }
+    iterator end() { return &m_data_ptr.GetRawPtr()[m_size]; }
+    const_iterator begin() const { return &m_data_ptr.GetRawPtr()[0]; }
+    const_iterator end() const { return &m_data_ptr.GetRawPtr()[m_size]; }
 
     T& operator[](size_t index) { return m_data_ptr.GetRawPtr()[index]; }
     const T& operator[](size_t index) const { return m_data_ptr.GetRawPtr()[index]; }
@@ -85,16 +90,37 @@ public:
             return *this;
         }
 
-        m_data_ptr = nullptr;
-        memcpy(new_data_ptr, other.m_data_ptr.GetRawPtr(), other.m_size * sizeof(T));
+        m_data_ptr.Clean();
+        std::memcpy(new_data_ptr, other.m_data_ptr.GetRawPtr(), other.m_size * sizeof(T));
 
-        m_data_ptr = new_data_ptr;
+        m_data_ptr.Acquire(new_data_ptr);
         m_size = other.m_size;
         m_capacity = other.m_capacity;
         return *this;
     }
 
 private:
+    bool PushBackChecks()
+    {
+        BIT_TRACING;
+        if (m_size >= m_capacity)
+        {
+            if (m_capacity_limit_max > 0 && m_size >= m_capacity_limit_max)
+            {
+                BIT_LOG_ERROR("Pushing to vector failed due to max capacity being reached");
+                return false;
+            }
+
+            const size_t new_capacity = m_capacity == 0 ? 1 : m_capacity * 2;
+            if (!Resize(new_capacity))
+            {
+                BIT_LOG_ERROR("Vector resizing failed");
+                return false;
+            }
+        }
+
+        return true;
+    }
     void OverrideSize(const size_t new_size) { m_size = new_size; }
 
     bool Resize(size_t new_capacity)
@@ -126,7 +152,7 @@ private:
             new_data_ptr[i] = std::move(current_ptr[i]);
         }
 
-        m_data_ptr = nullptr;
+        m_data_ptr.Acquire(new_data_ptr);
         m_capacity = new_capacity;
         return true;
     }

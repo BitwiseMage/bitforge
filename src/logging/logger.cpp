@@ -16,6 +16,6 @@ Logger::Logger()
     quill::PatternFormatterOptions pattern_formatter_options("[%(time)] %(short_source_location:<28) [%(log_level:<8)] %(message)");
 #endif
 
-    m_logger = quill::Frontend::create_or_get_logger("root", std::move(console_sink), pattern_formatter_options);
+    m_logger.Acquire(quill::Frontend::create_or_get_logger("root", std::move(console_sink), pattern_formatter_options));
     m_logger->set_log_level(quill::LogLevel::TraceL3);
 }

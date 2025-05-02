@@ -3,19 +3,32 @@
 #include "quill/Backend.h"
 
 #include "tracing.h"
-#include "logging/logger.h"
 
 BitforgeInstance::BitforgeInstance()
 {
-    m_timer_subsystem.SetMinimumFrameTime(16.6f);
+
+    UniquePtr<TimerSubsystem> timer_subsystem = MakeUniquePtr<TimerSubsystem>(this);
+    m_timer_subsystem = timer_subsystem.GetRawPtr();
+    m_timer_subsystem->SetMinimumFrameTime(16.6666f);
+
+    m_subsystems_vector.PushBack(std::move(timer_subsystem));
 }
 
 void BitforgeInstance::Tick()
 {
     BIT_TRACING;
+    m_timer_subsystem->MarkStartWork();
+    TickSubsystems();
+    m_timer_subsystem->MarkEndWork();
+}
 
-    m_timer_subsystem.MarkStartWork();
-    // Work fits here
-    m_timer_subsystem.MarkEndWork();
-    m_timer_subsystem.PossibleSleep();
+void BitforgeInstance::TickSubsystems()
+{
+    for (const UniquePtr<Subsystem>& subsystem: m_subsystems_vector)
+    {
+        if (subsystem->ShouldTick())
+        {
+            subsystem->Tick();
+        }
+    }
 }

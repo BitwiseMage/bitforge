@@ -41,7 +41,7 @@ void String::ImportFromCharPtr(const char* str_ptr)
 
 
     m_data = Vector<char>(++string_size);
-    memcpy(m_data.GetData(), str_ptr, string_size);
+    std::memcpy(m_data.GetData(), str_ptr, string_size);
     m_data.OverrideSize(string_size);
 }
 

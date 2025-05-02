@@ -11,6 +11,7 @@ public:
     virtual ~Subsystem() = default;
 
     virtual bool ShouldTick() = 0;
+    virtual void Tick() { }
 
 private:
     BitforgeInstance* m_engine_instance = nullptr;

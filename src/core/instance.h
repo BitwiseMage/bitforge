@@ -15,7 +15,10 @@ public:
     int32_t GetExitRequestCode() const { return m_requested_exit_code; }
 
 private:
-    TimerSubsystem m_timer_subsystem = TimerSubsystem(this);
+    void TickSubsystems();
+
+    TimerSubsystem* m_timer_subsystem = nullptr;
+    Vector<UniquePtr<Subsystem>> m_subsystems_vector = Vector<UniquePtr<Subsystem>>(2);
 
     bool m_requested_exit = false;
     int32_t m_requested_exit_code = 0;

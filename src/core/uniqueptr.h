@@ -33,36 +33,52 @@ class UniquePtr
 public:
     UniquePtr() = default;
     UniquePtr(const UniquePtr&) = delete;
+    ~UniquePtr() { Clean(); }
 
     explicit UniquePtr(T* ptr) : m_ptr(ptr) { }
-    UniquePtr(UniquePtr&& other) noexcept : m_ptr(other.m_ptr) { other.m_ptr = nullptr; }
+    UniquePtr(UniquePtr&& other) noexcept : m_ptr(other.Release()) { }
 
-    ~UniquePtr() { Clear(); }
-
-    T* GetRawPtr() const { return m_ptr; }
+    template<class U, typename = typename std::enable_if<std::is_convertible<U*, T*>::value>::type>
+    UniquePtr(UniquePtr<U>&& other) noexcept : m_ptr(other.Release()) { }
 
     T& operator*() const { return *m_ptr; }
     T* operator->() const noexcept { return m_ptr; }
     explicit operator bool() const noexcept { return m_ptr != nullptr; }
-    UniquePtr& operator=(T* new_ptr)
+
+    UniquePtr& operator=(UniquePtr&& other) noexcept
     {
-        Clear();
-        m_ptr = new_ptr;
+        Clean();
+        m_ptr = other.Release();
         return *this;
     }
 
-    UniquePtr& operator=(const UniquePtr&) = delete;
+    T* GetRawPtr() const { return m_ptr; }
 
-private:
-    void Clear()
+    void Acquire(T* ptr)
+    {
+        Clean();
+        m_ptr = ptr;
+    }
+
+    T* Release()
+    {
+        T* ptr = m_ptr;
+        m_ptr = nullptr;
+        return ptr;
+    }
+
+    void Clean()
     {
         if (!m_ptr)
         {
             return;
         }
+
         delete m_ptr;
+        m_ptr = nullptr;
     }
 
+private:
     T* m_ptr = nullptr;
 };
 
