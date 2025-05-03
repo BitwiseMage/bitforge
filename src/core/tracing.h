@@ -2,7 +2,7 @@
 
 #include "tracy/Tracy.hpp"
 
-#if NDEBUG
+#ifdef NDEBUG
 
 #define BIT_TRACING
 #define BIT_TRACING_NAMED(name)

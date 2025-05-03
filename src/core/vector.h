@@ -10,6 +10,7 @@ public:
     Vector(const Vector&) = delete;
     ~Vector()
     {
+        CleanDataPointer();
         m_size = 0;
         m_capacity = 0;
         m_capacity_limit_max = 0;
@@ -36,11 +37,11 @@ public:
             return;
         }
 
-        m_data_ptr.Acquire(data_ptr);
+        m_data_ptr = data_ptr;
         m_capacity = capacity_initial;
         m_capacity_limit_max = capacity_limit_max;
     }
-    T* GetData() { return m_data_ptr.GetRawPtr(); }
+    T* GetData() { return m_data_ptr; }
 
     T* PushBack(T& new_value)
     {
@@ -50,8 +51,8 @@ public:
             return nullptr;
         }
 
-        m_data_ptr.GetRawPtr()[m_size] = new_value;
-        return &m_data_ptr.GetRawPtr()[m_size++];
+        m_data_ptr[m_size] = new_value;
+        return &m_data_ptr[m_size++];
     }
 
     T* PushBack(T&& new_value)
@@ -62,19 +63,19 @@ public:
             return nullptr;
         }
 
-        m_data_ptr.GetRawPtr()[m_size] = std::move(new_value);
-        return &m_data_ptr.GetRawPtr()[m_size++];
+        m_data_ptr[m_size] = std::move(new_value);
+        return &m_data_ptr[m_size++];
     }
 
     typedef T* iterator;
     typedef const T* const_iterator;
-    iterator begin() { return &m_data_ptr.GetRawPtr()[0]; }
-    iterator end() { return &m_data_ptr.GetRawPtr()[m_size]; }
-    const_iterator begin() const { return &m_data_ptr.GetRawPtr()[0]; }
-    const_iterator end() const { return &m_data_ptr.GetRawPtr()[m_size]; }
+    iterator begin() { return &m_data_ptr[0]; }
+    iterator end() { return &m_data_ptr[m_size]; }
+    const_iterator begin() const { return &m_data_ptr[0]; }
+    const_iterator end() const { return &m_data_ptr[m_size]; }
 
-    T& operator[](size_t index) { return m_data_ptr.GetRawPtr()[index]; }
-    const T& operator[](size_t index) const { return m_data_ptr.GetRawPtr()[index]; }
+    T& operator[](size_t index) { return m_data_ptr[index]; }
+    const T& operator[](size_t index) const { return m_data_ptr[index]; }
     Vector& operator=(const Vector& other)
     {
         BIT_TRACING;
@@ -90,10 +91,10 @@ public:
             return *this;
         }
 
-        m_data_ptr.Clean();
-        std::memcpy(new_data_ptr, other.m_data_ptr.GetRawPtr(), other.m_size * sizeof(T));
+        CleanDataPointer();
+        std::memcpy(new_data_ptr, other.m_data_ptr, other.m_size * sizeof(T));
 
-        m_data_ptr.Acquire(new_data_ptr);
+        m_data_ptr = new_data_ptr;
         m_size = other.m_size;
         m_capacity = other.m_capacity;
         return *this;
@@ -146,18 +147,24 @@ private:
             return false;
         }
 
-        T* current_ptr = m_data_ptr.GetRawPtr();
+        T* current_ptr = m_data_ptr;
         for (size_t i = 0; i < m_size; i++)
         {
             new_data_ptr[i] = std::move(current_ptr[i]);
         }
 
-        m_data_ptr.Acquire(new_data_ptr);
+        m_data_ptr = new_data_ptr;
         m_capacity = new_capacity;
         return true;
     }
 
-    UniquePtr<T> m_data_ptr;
+    void CleanDataPointer()
+    {
+        delete[] m_data_ptr;
+        m_data_ptr = nullptr;
+    }
+
+    T* m_data_ptr = nullptr;
 
     size_t m_size = 0;
     size_t m_capacity = 0;

@@ -7,13 +7,13 @@ class Subsystem
 {
 public:
     Subsystem() = delete;
-    explicit Subsystem(const String& subsystem_name, BitforgeInstance* engine_instance) : m_engine_instance(engine_instance), m_subsystem_name(subsystem_name) { }
-    virtual ~Subsystem() = default;
+    explicit Subsystem(const String& subsystem_name, BitforgeInstance* engine_instance) : m_engine_instance(engine_instance), m_subsystem_name(subsystem_name) { BIT_LOG_INFO("Subsystem initialization: {}", m_subsystem_name.GetCString()); }
+    virtual ~Subsystem() { BIT_LOG_INFO("Subsystem shutdown: {}", m_subsystem_name.GetCString()); }
 
     virtual bool ShouldTick() = 0;
     virtual void Tick(const int64_t delta_time_ns) { }
 
-private:
+protected:
     BitforgeInstance* m_engine_instance = nullptr;
     String m_subsystem_name;
 };

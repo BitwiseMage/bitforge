@@ -20,6 +20,7 @@ set (source_files
 		${CMAKE_SOURCE_DIR}/src/logging/logger.cpp
 		${CMAKE_SOURCE_DIR}/src/core/string.cpp
 		${CMAKE_SOURCE_DIR}/src/timer/timer.cpp
+		${CMAKE_SOURCE_DIR}/src/renderer/renderer.cpp
 		${CMAKE_SOURCE_DIR}/src/core/tracing.h
 		${CMAKE_SOURCE_DIR}/src/core/instance.h
 		${CMAKE_SOURCE_DIR}/src/core/thread.h
@@ -29,6 +30,7 @@ set (source_files
 		${CMAKE_SOURCE_DIR}/src/core/string.h
 		${CMAKE_SOURCE_DIR}/src/core/vector.h
 		${CMAKE_SOURCE_DIR}/src/timer/timer.h
+		${CMAKE_SOURCE_DIR}/src/renderer/renderer.h
 )
 
 # SDL
@@ -46,13 +48,10 @@ target_compile_options(TracyClient PUBLIC "-w")
 set_target_properties(TracyClient PROPERTIES FOLDER external)
 
 # Quill
-option(QUILL_DISABLE_NON_PREFIXED_MACROS "" ON)
-add_subdirectory(${CMAKE_SOURCE_DIR}/external/quill EXCLUDE_FROM_ALL)
-set_target_properties(quill PROPERTIES FOLDER external)
 
 # Bitforge Lib
 add_library(bitforge_lib ${source_files})
-target_link_libraries(bitforge_lib PUBLIC SDL3::SDL3 Tracy::TracyClient quill::quill)
+target_link_libraries(bitforge_lib PUBLIC SDL3::SDL3 Tracy::TracyClient)
 target_include_directories(bitforge_lib PUBLIC ${CMAKE_SOURCE_DIR}/src)
 set_target_properties(bitforge_lib PROPERTIES FOLDER tools)
 
