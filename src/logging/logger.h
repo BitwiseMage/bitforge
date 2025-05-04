@@ -17,14 +17,17 @@ class Logger
 {
 public:
     Logger();
+    ~Logger();
+
     static Logger* Get()
     {
         static Logger logger;
         return &logger;
     }
 
-    quill::Logger* GetMainLoggerPtr() { return m_logger.GetRawPtr(); }
+    quill::Logger* GetMainLoggerPtr() const { return m_logger; }
+    void FLushLogs() const;
 
 private:
-    UniquePtr<quill::Logger> m_logger;
+    quill::Logger* m_logger;
 };

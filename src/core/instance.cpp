@@ -1,11 +1,14 @@
 ﻿#include "instance.h"
 
 #include "tracing.h"
+#include "version.h"
 
 #include "renderer/renderer.h"
 
 BitforgeInstance::BitforgeInstance()
 {
+    BIT_LOG_INFO("Bitforge v{} heating up", VERSION_STRING);
+
     UniquePtr<TimerSubsystem> timer_subsystem = MakeUniquePtr<TimerSubsystem>(this);
     m_timer_subsystem = timer_subsystem.GetRawPtr();
     m_timer_subsystem->SetMinimumFrameTime(16.6666f);

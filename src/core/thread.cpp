@@ -8,9 +8,9 @@
 static int SdlThreadFunc(void* data)
 {
     Thread* thread = static_cast<Thread*>(data);
-    BIT_LOG_INFO("Starting thread '%s'");
+    BIT_LOG_INFO("Starting thread");
     int exit_code = thread->Main();
-    BIT_LOG_INFO("Exiting thread '%s' with code %d");
+    BIT_LOG_INFO("Exiting thread with code {}", exit_code);
     return exit_code;
 }
 

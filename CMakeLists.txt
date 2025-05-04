@@ -31,6 +31,7 @@ set (source_files
 		${CMAKE_SOURCE_DIR}/src/core/vector.h
 		${CMAKE_SOURCE_DIR}/src/timer/timer.h
 		${CMAKE_SOURCE_DIR}/src/renderer/renderer.h
+		${CMAKE_SOURCE_DIR}/src/core/version.h
 
 )
 
